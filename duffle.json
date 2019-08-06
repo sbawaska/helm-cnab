@@ -1,0 +1,69 @@
+{
+    "name": "helm",
+    "schemaVersion": "v1.0.0-WD",
+    "version": "0.0.0",
+    "description": "Makes a helm chart available as a cnab bundle",
+    "invocationImages": {
+        "cnab": {
+            "builder": "docker",
+            "configuration": {
+                "registry": "sbawaska"
+            },
+            "name": "cnab"
+        }
+    },
+    "keywords": [
+        "helm-cnab"
+    ],
+    "maintainers": [
+        {
+            "email": "john.doe@example.com",
+            "name": "John Doe",
+            "url": "https://example.com"
+        },
+        {
+            "email": "jane.doe@example.com",
+            "name": "Jane Doe",
+            "url": "https://example.com"
+        }
+    ],
+    "credentials": {
+        "kubeconfig": {
+            "path": "/root/.kube/config"
+        }
+    },
+    "definitions": {
+        "chart": {
+            "type": "string"
+        },
+        "repo": {
+            "type": "string",
+            "default": "stable"
+        }
+    },
+    "parameters": {
+        "fields": {
+            "chart": {
+                "description": "the chart to install",
+                "definition": "chart",
+                "applyTo": [
+                    "install"
+                ],
+                "destination": {
+                    "env": "CHART"
+                },
+                "required": "true"
+            },
+            "repo": {
+                "description": "url of the helm repo where the chart is hosted",
+                "definition": "repo",
+                "applyTo": [
+                    "install"
+                ],
+                "destination": {
+                    "env": "REPO_URL"
+                }
+            }
+        }
+    }
+}
