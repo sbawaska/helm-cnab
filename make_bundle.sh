@@ -25,5 +25,3 @@ cat duffle.json | jq ".name = \"${chart_name}\"" > duffle.json.tmp
 mv duffle.json.tmp duffle.json
 
 duffle build .
-duffle export ${chart_name} -t
-tar -xvzf ${chart_name}*tgz
