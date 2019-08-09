@@ -16,5 +16,14 @@ sedi "s*chart_name*${chart_name}*g" Dockerfile.tmp
 sedi "s*chart_url*${chart_url}*g" Dockerfile.tmp
 mv Dockerfile.tmp cnab/Dockerfile
 
+cp cnab/app/run run.sh
+sedi "s*chart_name*${chart_name}*g" run.sh
+mv run.sh cnab/app/run
+chmod +x cnab/app/run
+
 cat duffle.json | jq ".name = \"${chart_name}\"" > duffle.json.tmp
 mv duffle.json.tmp duffle.json
+
+duffle build .
+duffle export ${chart_name} -t
+tar -xvzf ${chart_name}*tgz

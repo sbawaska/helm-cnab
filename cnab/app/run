@@ -6,22 +6,11 @@ set -o nounset
 set -o pipefail
 
 action=$CNAB_ACTION
-repo_name="stable"
 
 case $action in
     install)
-        echo "Initializing helm"
-        helm init
-        
-        echo "Adding repo"
-        if [[ $REPO_URL != "stable" ]]; then
-          repo_name=$CHART
-          helm repo add $CHART $REPO_URL
-        fi
-        helm repo update
-
         echo "Installing chart"
-        helm install $CNAB_INSTALLATION_NAME $repo_name/$CHART
+        helm install $CNAB_INSTALLATION_NAME mysql/mysql
         ;;
     uninstall)
         echo "Uninstall action"
