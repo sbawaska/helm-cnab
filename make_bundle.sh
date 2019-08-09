@@ -21,7 +21,7 @@ sedi "s*chart_name*${chart_name}*g" run.sh
 mv run.sh cnab/app/run
 chmod +x cnab/app/run
 
-cat duffle.json | jq ".name = \"${chart_name}\"" > duffle.json.tmp
+cat duffle.json | jq ".name = \"${chart_name}\"" --indent 4 > duffle.json.tmp
 mv duffle.json.tmp duffle.json
 
 duffle build .
