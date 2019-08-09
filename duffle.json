@@ -15,18 +15,6 @@
     "keywords": [
         "helm-cnab"
     ],
-    "maintainers": [
-        {
-            "email": "john.doe@example.com",
-            "name": "John Doe",
-            "url": "https://example.com"
-        },
-        {
-            "email": "jane.doe@example.com",
-            "name": "Jane Doe",
-            "url": "https://example.com"
-        }
-    ],
     "credentials": {
         "kubeconfig": {
             "path": "/root/.kube/config"
