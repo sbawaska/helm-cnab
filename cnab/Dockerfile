@@ -19,6 +19,10 @@ RUN apt-get update && apt-get install -y curl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+RUN helm init \
+  && helm repo add chart_name chart_url \
+  && helm repo update
+
 COPY Dockerfile /cnab/Dockerfile
 COPY app /cnab/app
 
