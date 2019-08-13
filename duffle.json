@@ -19,39 +19,5 @@
         "kubeconfig": {
             "path": "/root/.kube/config"
         }
-    },
-    "definitions": {
-        "chart": {
-            "type": "string"
-        },
-        "repo": {
-            "type": "string",
-            "default": "stable"
-        }
-    },
-    "parameters": {
-        "fields": {
-            "chart": {
-                "description": "the chart to install",
-                "definition": "chart",
-                "applyTo": [
-                    "install"
-                ],
-                "destination": {
-                    "env": "CHART"
-                },
-                "required": "true"
-            },
-            "repo": {
-                "description": "url of the helm repo where the chart is hosted",
-                "definition": "repo",
-                "applyTo": [
-                    "install"
-                ],
-                "destination": {
-                    "env": "REPO_URL"
-                }
-            }
-        }
     }
 }
