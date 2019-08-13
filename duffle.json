@@ -19,5 +19,25 @@
         "kubeconfig": {
             "path": "/root/.kube/config"
         }
+    },
+    "definitions": {
+        "extra_options": {
+            "type": "string"
+        }
+    },
+    "parameters": {
+        "fields": {
+            "extra_options": {
+                "description": "options to pass to helm install command",
+                "definition": "extra_options",
+                "applyTo": [
+                    "install"
+                ],
+                "destination": {
+                    "env": "EXTRA_OPTIONS"
+                },
+                "required": "false"
+            }
+        }
     }
 }

@@ -10,7 +10,7 @@ action=$CNAB_ACTION
 case $action in
     install)
         echo "Installing chart"
-        helm install ${CNAB_INSTALLATION_NAME} chart_name/chart_name
+        helm install ${CNAB_INSTALLATION_NAME} chart_name/chart_name $EXTRA_OPTIONS
         ;;
     uninstall)
         echo "Uninstall action"
