@@ -1,27 +1,32 @@
 #!/bin/bash
 
+set -x
 set -o errexit
 set -o nounset
 set -o pipefail
 
-chart_name=$1
-chart_url=$2
+args=( "$@" )
 
 sedi () {
     sed --version >/dev/null 2>&1 && sed -i -- "$@" || sed -i "" "$@"
 }
 
 cp cnab/Dockerfile Dockerfile.tmp
-sedi "s*chart_name*${chart_name}*g" Dockerfile.tmp
-sedi "s*chart_url*${chart_url}*g" Dockerfile.tmp
-mv Dockerfile.tmp cnab/Dockerfile
+for (( counter=0; counter<$#; counter+=2 )); do
+    helm_add+="  \&\& helm repo add ${args[$counter]} ${args[$counter+1]} "
+done
 
+sedi "s*  && helm repo add chart_name chart_url*${helm_add}*g" Dockerfile.tmp
+mv Dockerfile.tmp cnab/Dockerfile
 cp cnab/app/run run.sh
-sedi "s*chart_name*${chart_name}*g" run.sh
+for (( counter=0; counter<$#; counter+=2 )); do
+    helm_install+="helm install \${CNAB_INSTALLATION_NAME}_${args[$counter]} ${args[$counter]}/${args[$counter]} "
+    if [[ counter+2 -lt $# ]]; then
+        helm_install+=" \&\& "
+    fi
+done
+
+sedi "s*helm install \${CNAB_INSTALLATION_NAME} chart_name/chart_name*${helm_install}*g" run.sh
 mv run.sh cnab/app/run
 chmod +x cnab/app/run
-
-cat duffle.json | jq ".name = \"${chart_name}\"" --indent 4 > duffle.json.tmp
-mv duffle.json.tmp duffle.json
-
 duffle build .
