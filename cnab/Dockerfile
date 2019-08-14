@@ -19,9 +19,19 @@ RUN apt-get update && apt-get install -y curl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-RUN helm init \
+RUN apt-get update && apt-get install -y curl \
+  && apt install snapd -y \
+  && snap install yq \
+  && helm init \
+  && mkdir /charts \
   && helm repo add chart_name chart_url \
-  && helm repo update
+  && helm repo update \
+  && cat ~/.helm/repository/cache/istio-index.yaml | yq r - 'entries.*.[*].urls' | sed 's/^-.*http/http/g' | xargs -I % curl -O % \
+  && mv * /charts \
+  && apt uninstall snapd \
+  && apt-get remove -y --auto-remove curl \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 COPY Dockerfile /cnab/Dockerfile
 COPY app /cnab/app
